@@ -26,7 +26,7 @@ class EditLearner:
     Extracts transferable style/content rules using Claude.
     """
 
-    MODEL = "mixtral-8x7b-32768"  # GROQ free tier
+    MODEL = "llama-3.3-70b-versatile"  # GROQ free tier
 
     EXTRACTION_SYSTEM = """You are analyzing how a legal professional edited an AI-generated draft.
 Your job is to extract REUSABLE style and content patterns from the edits.

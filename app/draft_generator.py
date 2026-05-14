@@ -57,7 +57,7 @@ class DraftResult:
 
 class DraftGenerator:
     # GROQ models (free, very fast)
-    MODEL = "mixtral-8x7b-32768"  # Free tier for GROQ
+    MODEL = "llama-3.3-70b-versatile"  # GROQ free tier
     GEMINI_MODEL = "gemini-pro"
     CLAUDE_MODEL = "claude-sonnet-4-20250514"
 

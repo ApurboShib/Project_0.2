@@ -584,7 +584,7 @@
     <div class="metadata-grid">
       <div class="meta-card">
         <div class="meta-label">Draft Type</div>
-        <div class="meta-value">{{ doc_type or 'Document' }}</div>
+        <div class="meta-value">{{ draft.draft_type_label or 'Document' }}</div>
       </div>
       <div class="meta-card">
         <div class="meta-label">Generated</div>
@@ -601,7 +601,7 @@
       <h2 class="section-title">Generated Document</h2>
       <div class="draft-container">
         <button class="copy-btn" id="copyBtn">📋 Copy</button>
-        <div class="draft-content" id="draftContent">{{ draft | safe }}</div>
+        <div class="draft-content" id="draftContent">{{ draft.content | safe }}</div>
       </div>
     </div>
 
@@ -762,7 +762,7 @@
           const response = await fetch('/api/feedback', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ rating, feedbacks, comment, doc_ids: {{ doc_ids | tojson }} })
+            body: JSON.stringify({ rating, feedbacks, comment, doc_ids: {{ draft.doc_ids | tojson }} })
           });
 
           if (response.ok) {
