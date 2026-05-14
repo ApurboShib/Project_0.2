@@ -75,7 +75,7 @@ def _get_llm_client():
 
 
 llm_client = _get_llm_client()
-processor = DocumentProcessor(anthropic_client=llm_client if LLM_PROVIDER == "anthropic" else None)
+processor = DocumentProcessor(client=llm_client)
 retrieval = RetrievalEngine(persist_dir=str(CHROMA_DIR))
 draft_generator = DraftGenerator(llm_client, style_store=style_store)
 edit_learner = EditLearner(llm_client, style_store=style_store) if llm_client else None
@@ -167,8 +167,8 @@ async def process_document(
         )
 
     filename = file.filename or "uploaded_document"
-    if not filename.lower().endswith((".pdf", ".txt", ".md")):
-        raise HTTPException(status_code=400, detail="Only PDF or text files are supported.")
+    if not filename.lower().endswith((".pdf", ".txt", ".md", ".png", ".jpg", ".jpeg")):
+        raise HTTPException(status_code=400, detail="Only PDF, text, or image files (PNG/JPG) are supported.")
 
     file_bytes = await file.read()
     doc_id = str(uuid.uuid4())
@@ -244,8 +244,8 @@ async def health():
 @app.post("/api/process")
 async def api_process_document(file: UploadFile = File(...)):
     filename = file.filename or "uploaded_document"
-    if not filename.lower().endswith((".pdf", ".txt", ".md")):
-        raise HTTPException(status_code=400, detail="Only PDF or text files are supported.")
+    if not filename.lower().endswith((".pdf", ".txt", ".md", ".png", ".jpg", ".jpeg")):
+        raise HTTPException(status_code=400, detail="Only PDF, text, or image files (PNG/JPG) are supported.")
     file_bytes = await file.read()
     doc_id = str(uuid.uuid4())
     processed = processor.process(file_bytes, filename, doc_id)
