@@ -6,11 +6,13 @@ An end-to-end AI-powered system designed for processing legal documents, generat
 
 ## Features
 
-- Document Processing: Automated text extraction from PDFs and text files.
-- Semantic Retrieval: Vector search using ChromaDB to find relevant legal evidence.
-- Grounded Drafting: Draft generation anchored in source evidence with citations.
-- Style Learning: Learns writing style and formatting preferences from user edits.
-- REST API: Full support for programmatic access and a web interface.
+- **Modern Web Interface**: Responsive design with Dark/Light mode, drag & drop upload, and real-time previews.
+- **Document Processing**: Automated text extraction from PDFs and text files.
+- **Semantic Retrieval**: Vector search using ChromaDB to find relevant legal evidence.
+- **Grounded Drafting**: Draft generation anchored in source evidence with citations.
+- **Interactive Feedback Loop**: 5-star rating system and detailed feedback to teach writing style and formatting preferences.
+- **Robust API**: Full support for programmatic access via REST API with built-in Swagger/ReDoc documentation.
+- **Secure Configuration**: Environment variable management using `python-dotenv`.
 
 ---
 
