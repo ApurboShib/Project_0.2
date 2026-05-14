@@ -1,5 +1,6 @@
 import logging
 import uuid
+from enum import Enum
 from typing import List, Optional
 
 from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
@@ -30,7 +31,18 @@ except ImportError:
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Legal Drafting Assistant", version="1.0.0")
+app = FastAPI(
+    title="Legal Drafting Assistant",
+    description="""
+    An AI-powered legal document processing and drafting system.
+    
+    ### Core Features:
+    * **Document Processing**: Upload PDFs/TXTs and index them for retrieval.
+    * **AI Drafting**: Generate legal documents grounded in retrieved evidence.
+    * **Feedback Loop**: Capture edits to improve future draft quality.
+    """,
+    version="1.0.0"
+)
 templates = Jinja2Templates(directory="app/templates")
 
 store = SQLiteStore(DATA_DIR / "app.db")
@@ -69,15 +81,35 @@ draft_generator = DraftGenerator(llm_client, style_store=style_store)
 edit_learner = EditLearner(llm_client, style_store=style_store) if llm_client else None
 
 
+class DraftType(str, Enum):
+    case_fact_summary = "case_fact_summary"
+    internal_memo = "internal_memo"
+    notice_summary = "notice_summary"
+    document_checklist = "document_checklist"
+    title_review = "title_review"
+
+
 class DraftRequest(BaseModel):
-    doc_ids: List[str] = Field(default_factory=list)
-    draft_type: str
-    custom_instructions: Optional[str] = ""
+    doc_ids: List[str] = Field(
+        ..., 
+        description="List of processed document IDs to use for evidence",
+        example=["550e8400-e29b-41d4-a716-446655440000"]
+    )
+    draft_type: DraftType = Field(
+        ..., 
+        description="The type of legal draft to generate",
+        example=DraftType.case_fact_summary
+    )
+    custom_instructions: Optional[str] = Field(
+        "", 
+        description="Optional specific instructions for the AI",
+        example="Focus on the monetary damages section."
+    )
 
 
 class EditRequest(BaseModel):
-    draft_id: str
-    edited_content: str
+    draft_id: str = Field(..., description="The ID of the draft being edited")
+    edited_content: str = Field(..., description="The full updated content of the draft")
 
 
 def _build_query(draft_type: str, structured: dict) -> str:
@@ -119,7 +151,11 @@ async def process_document(
     custom_instructions: str = Form(""),
 ):
     if draft_type not in DRAFT_TYPES:
-        raise HTTPException(status_code=400, detail="Invalid draft type.")
+        valid_types = ", ".join(DRAFT_TYPES.keys())
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Invalid draft type. Valid options are: {valid_types}"
+        )
     if not llm_client:
         return templates.TemplateResponse(
             "result.html",
@@ -221,7 +257,11 @@ async def api_process_document(file: UploadFile = File(...)):
 @app.post("/api/draft")
 async def api_generate_draft(payload: DraftRequest):
     if payload.draft_type not in DRAFT_TYPES:
-        raise HTTPException(status_code=400, detail="Invalid draft type.")
+        valid_types = ", ".join(DRAFT_TYPES.keys())
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Invalid draft type. Valid options are: {valid_types}"
+        )
     if not llm_client:
         raise HTTPException(status_code=400, detail="LLM API is not configured. Please set GROQ_API_KEY or ANTHROPIC_API_KEY in .env")
     if not payload.doc_ids:
