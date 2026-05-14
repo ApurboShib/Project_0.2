@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generated Draft - Legal Drafting Assistant</title>
+  <style>
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --success-color: #27ae60;
+      --danger-color: #e74c3c;
+      --light-bg: #ecf0f1;
+      --white: #ffffff;
+      --text-dark: #2c3e50;
+      --text-light: #7f8c8d;
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: var(--text-dark);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 30px;
+      border-left: 5px solid var(--secondary-color);
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card h2 {
+      color: var(--primary-color);
+      margin-bottom: 16px;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--light-bg);
+    }
+
+    .error-card {
+      background: #fadbd8;
+      border-left-color: var(--danger-color);
+    }
+
+    .error-message {
+      color: var(--danger-color);
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .draft-content {
+      background: #f8f9fa;
+      padding: 24px;
+      border-radius: 6px;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      overflow-x: auto;
+      margin: 16px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .draft-metadata {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--light-bg);
+    }
+
+    .metadata-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .metadata-label {
+      font-size: 12px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+
+    .metadata-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    /* Evidence Section */
+    .evidence-list {
+      margin-top: 16px;
+    }
+
+    .evidence-item {
+      background: #f0f8ff;
+      border-left: 4px solid var(--secondary-color);
+      padding: 16px;
+      margin-bottom: 16px;
+      border-radius: 4px;
+    }
+
+    .evidence-badge {
+      display: inline-block;
+      background: var(--secondary-color);
+      color: var(--white);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .evidence-source {
+      color: var(--text-light);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .evidence-text {
+      background: var(--white);
+      padding: 12px;
+      border-radius: 4px;
+      font-family: 'Monaco', monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--text-dark);
+    }
+
+    /* Forms */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 16px;
+      border: 2px solid var(--border-color);
+      border-radius: 6px;
+      font-family: 'Monaco', monospace;
+      font-size: 13px;
+      resize: vertical;
+      min-height: 150px;
+      transition: all 0.3s ease;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+    }
+
+    /* Buttons */
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+      color: var(--white);
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+    }
+
+    .btn-secondary {
+      background: var(--light-bg);
+      color: var(--primary-color);
+      width: 100%;
+    }
+
+    .btn-secondary:hover {
+      background: #d5dbdb;
+    }
+
+    .btn-small {
+      width: auto;
+      padding: 8px 16px;
+      font-size: 12px;
+    }
+
+    a {
+      color: var(--secondary-color);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: #2980b9;
+      text-decoration: underline;
+    }
+
+    /* Status Messages */
+    .status-message {
+      padding: 16px;
+      border-radius: 6px;
+      border-left: 4px solid;
+      margin-top: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .status-message.success {
+      background: #d5f4e6;
+      border-left-color: var(--success-color);
+      color: var(--success-color);
+    }
+
+    .status-message.info {
+      background: #d6eaf8;
+      border-left-color: var(--secondary-color);
+      color: var(--secondary-color);
+    }
+
+    /* Learned Rules Display */
+    .rule-item {
+      background: #eef8f1;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 4px;
+      border-left: 3px solid var(--success-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .rule-text {
+      color: var(--text-dark);
+      font-size: 14px;
+    }
+
+    .rule-frequency {
+      background: var(--success-color);
+      color: var(--white);
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        max-width: 100%;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .draft-metadata {
+        grid-template-columns: 1fr;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+
+    /* Utility Classes */
+    .mt-16 {
+      margin-top: 16px;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .text-muted {
+      color: var(--text-light);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    {% if error %}
+      <!-- Error Card -->
+      <div class="card error-card">
+        <h2>⚠️ Error Processing Document</h2>
+        <p class="error-message">{{ error }}</p>
+        <p class="text-muted mt-16">
+          Unable to process your document. Please check that you have configured your Anthropic API key 
+          and try again with a valid document.
+        </p>
+        <a href="/" class="btn-secondary mt-16" style="display: inline-block; width: auto; padding: 10px 20px;">
+          ← Back to Upload
+        </a>
+      </div>
+    {% else %}
+      <!-- Draft Title Card -->
+      <div class="card">
+        <h2>
+          <span>📝</span>
+          <span>{{ draft.title }}</span>
+        </h2>
+        
+        <!-- Metadata -->
+        <div class="draft-metadata">
+          <div class="metadata-item">
+            <span class="metadata-label">Draft Type</span>
+            <span class="metadata-value">{{ draft.draft_type_label }}</span>
+          </div>
+          <div class="metadata-item">
+            <span class="metadata-label">Word Count</span>
+            <span class="metadata-value">{{ draft.word_count }}</span>
+          </div>
+          <div class="metadata-item">
+            <span class="metadata-label">Generated</span>
+            <span class="metadata-value">Just Now</span>
+          </div>
+          <div class="metadata-item">
+            <span class="metadata-label">Evidence Sources</span>
+            <span class="metadata-value">{{ draft.evidence_used|length }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Generated Draft Content -->
+      <div class="card">
+        <h2>
+          <span>📄</span>
+          <span>Generated Draft</span>
+        </h2>
+        <div class="draft-content">{{ draft.content }}</div>
+      </div>
+
+      <!-- Evidence Section -->
+      <div class="card">
+        <h2>
+          <span>🔍</span>
+          <span>Evidence & Citations ({{ draft.evidence_used|length }})</span>
+        </h2>
+        
+        {% if draft.evidence_used %}
+          <div class="evidence-list">
+            {% for evidence in draft.evidence_used %}
+              <div class="evidence-item">
+                <div style="margin-bottom: 8px;">
+                  <span class="evidence-badge">[Evidence {{ loop.index }}]</span>
+                </div>
+                
+                <div class="evidence-source">
+                  <strong>📁 Source:</strong> {{ evidence.filename }}<br>
+                  <strong>📄 Page:</strong> {{ evidence.page_num }} | 
+                  <strong>📊 Relevance Score:</strong> {{ (evidence.relevance_score * 100)|int }}%
+                </div>
+                
+                <div class="evidence-text">
+                  {{ evidence.text }}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-muted">No specific evidence citations in this draft.</p>
+        {% endif %}
+      </div>
+
+      <!-- Edit & Learning Section -->
+      <div class="card">
+        <h2>
+          <span>✏️</span>
+          <span>Refine & Learn from Your Feedback</span>
+        </h2>
+        
+        <p class="text-muted">
+          Edit the draft below to improve it according to your preferences. Your edits will be analyzed 
+          to extract style rules that the system learns for future drafts.
+        </p>
+
+        <form action="/edits" method="post">
+          <input type="hidden" name="draft_id" value="{{ draft.draft_id }}" />
+          
+          <label for="edited_content" style="font-weight: 600; color: var(--primary-color); font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px;">
+            Edit Draft Content
+          </label>
+          
+          <textarea 
+            name="edited_content" 
+            id="edited_content"
+            placeholder="Make any edits or improvements to the draft here..."
+          >{{ draft.content }}</textarea>
+          
+          <button type="submit" class="btn-primary">
+            <span>💾</span>
+            <span>Save Edits & Learn Preferences</span>
+          </button>
+        </form>
+
+        {% if edit_saved %}
+          <div class="status-message success">
+            <span>✓</span>
+            <span><strong>Success!</strong> Your edits have been saved and the system has learned new style rules.</span>
+          </div>
+
+          {% if learned_rules %}
+            <div class="mt-16">
+              <h3 style="color: var(--primary-color); font-size: 16px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
+                🎯 Newly Learned Rules
+              </h3>
+              {% for rule in learned_rules %}
+                <div class="rule-item">
+                  <span class="rule-text">{{ rule }}</span>
+                  <span class="rule-frequency">NEW</span>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
+
+      <!-- Document Information -->
+      <div class="card">
+        <h2>
+          <span>📋</span>
+          <span>Source Document Information</span>
+        </h2>
+
+        <div class="draft-metadata">
+          <div class="metadata-item">
+            <span class="metadata-label">Filename</span>
+            <span class="metadata-value">{{ processed.filename }}</span>
+          </div>
+          <div class="metadata-item">
+            <span class="metadata-label">Document Type</span>
+            <span class="metadata-value">{{ processed.structured.document_type|replace('_', ' ')|title }}</span>
+          </div>
+          <div class="metadata-item">
+            <span class="metadata-label">Total Pages</span>
+            <span class="metadata-value">{{ processed.total_pages }}</span>
+          </div>
+          <div class="metadata-item">
+            <span class="metadata-label">Word Count</span>
+            <span class="metadata-value">{{ processed.word_count }}</span>
+          </div>
+        </div>
+
+        {% if processed.structured.dates %}
+          <div class="mt-16">
+            <h3 style="color: var(--primary-color); font-size: 14px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
+              📅 Extracted Dates
+            </h3>
+            <p class="text-muted">
+              {% for date in processed.structured.dates %}
+                <span style="background: var(--light-bg); padding: 4px 8px; border-radius: 4px; margin-right: 4px;">{{ date }}</span>
+              {% endfor %}
+            </p>
+          </div>
+        {% endif %}
+
+        {% if processed.structured.parties %}
+          <div class="mt-16">
+            <h3 style="color: var(--primary-color); font-size: 14px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
+              👥 Identified Parties
+            </h3>
+            <p class="text-muted">
+              {% for party in processed.structured.parties %}
+                <span style="background: var(--light-bg); padding: 4px 8px; border-radius: 4px; margin-right: 4px;">{{ party }}</span>
+              {% endfor %}
+            </p>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Navigation -->
+      <div class="card" style="border-left-color: var(--text-light);">
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <a href="/" class="btn-secondary" style="display: inline-flex; align-items: center; justify-content: center; width: auto; padding: 10px 20px;">
+            ← Process Another Document
+          </a>
+          <a href="/api/documents" class="btn-secondary" style="display: inline-flex; align-items: center; justify-content: center; width: auto; padding: 10px 20px;">
+            📁 View All Documents
+          </a>
+          <a href="/api/drafts" class="btn-secondary" style="display: inline-flex; align-items: center; justify-content: center; width: auto; padding: 10px 20px;">
+            📝 View All Drafts
+          </a>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>

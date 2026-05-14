@@ -1,0 +1,33 @@
+{
+  "processed_document": {
+    "doc_id": "sample-doc-001",
+    "filename": "sample_notice.txt",
+    "total_pages": 1,
+    "word_count": 118,
+    "structured": {
+      "document_type": "notice",
+      "parties": ["Orion Logistics LLC", "Redwood Construction Group, Inc."],
+      "dates": ["March 12, 2026", "July 9, 2023", "April 15, 2026"],
+      "case_numbers": [],
+      "amounts": [],
+      "jurisdiction": "",
+      "key_clauses": ["NOTICE OF CONTRACT TERMINATION"],
+      "summary_hint": "NOTICE OF CONTRACT TERMINATION Date: March 12, 2026 From: Orion Logistics LLC..."
+    }
+  },
+  "draft_result": {
+    "draft_id": "sample-draft-001",
+    "draft_type": "notice_summary",
+    "title": "Notice-Related Summary: sample_notice.txt",
+    "content": "NOTICE TYPE & PURPOSE: Termination notice for the Master Services Agreement dated July 9, 2023. [Evidence 1]\n\nNOTIFYING PARTY: Orion Logistics LLC. [Evidence 1]\n\nRECIPIENT(S): Redwood Construction Group, Inc. [Evidence 1]\n\nKEY OBLIGATIONS OR DEADLINES: Outstanding invoices due within 30 days; confidential materials returned by April 15, 2026; final service reports due within 10 business days. [Evidence 1]\n\nCONSEQUENCES OF NON-COMPLIANCE: Legal action and recovery of fees/damages as permitted by the agreement. [Evidence 1]\n\nRELEVANT DATES: March 12, 2026; July 9, 2023; April 15, 2026. [Evidence 1]\n\nGAPS & AMBIGUITIES: Specific invoice amounts and detailed breach history are not stated in documents.",
+    "evidence_used": [
+      {
+        "chunk_id": "sample-doc-001_chunk_0",
+        "filename": "sample_notice.txt",
+        "page_num": 1,
+        "text": "NOTICE OF CONTRACT TERMINATION Date: March 12, 2026 From: Orion Logistics LLC To: Redwood Construction Group, Inc. This notice serves to inform you that Orion Logistics LLC is terminating the Master Services Agreement dated July 9, 2023...",
+        "relevance_score": 0.92
+      }
+    ]
+  }
+}

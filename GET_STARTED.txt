@@ -1,0 +1,179 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                   LEGAL DRAFTING ASSISTANT - GET STARTED                   ║
+║                                                                            ║
+║  A full-stack AI application for processing legal documents with          ║
+║  semantic search, Claude-powered drafting, and intelligent learning       ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+✓ BUILD STATUS: COMPLETE AND VERIFIED
+
+═══════════════════════════════════════════════════════════════════════════
+STEP 1: VERIFY INSTALLATION
+═══════════════════════════════════════════════════════════════════════════
+
+The project has been successfully built with all dependencies installed.
+Virtual environment is ready at: /Users/apurboshib/Desktop/Apurbo/Project_02/.venv
+
+To verify:
+  cd /Users/apurboshib/Desktop/Apurbo/Project_02
+  source .venv/bin/activate
+  python3 -c "from app.main import app; print('✓ All systems operational')"
+
+═══════════════════════════════════════════════════════════════════════════
+STEP 2: CONFIGURE API KEY
+═══════════════════════════════════════════════════════════════════════════
+
+Get your API key from: https://console.anthropic.com/
+
+Then set it in your environment:
+
+  export ANTHROPIC_API_KEY="sk-ant-v0-..."
+
+Or create a .env file in the project root:
+  ANTHROPIC_API_KEY=sk-ant-v0-...
+
+═══════════════════════════════════════════════════════════════════════════
+STEP 3: START THE APPLICATION
+═══════════════════════════════════════════════════════════════════════════
+
+From the project directory:
+
+  source .venv/bin/activate
+  python -m uvicorn app.main:app --reload
+
+You should see:
+  Uvicorn running on http://127.0.0.1:8000
+
+═══════════════════════════════════════════════════════════════════════════
+STEP 4: OPEN IN BROWSER
+═══════════════════════════════════════════════════════════════════════════
+
+Navigate to:
+  http://localhost:8000
+
+═══════════════════════════════════════════════════════════════════════════
+FEATURES OVERVIEW
+═══════════════════════════════════════════════════════════════════════════
+
+DOCUMENT PROCESSING:
+  • Upload PDF or text files
+  • Automatic text extraction with pypdf
+  • Fallback to Claude Vision OCR for scanned documents
+  • Structured field extraction (dates, parties, amounts, etc.)
+
+DRAFT GENERATION (5 Types):
+  • Case Fact Summary - Concise overview of key facts
+  • Internal Memo - Professional internal analysis
+  • Notice Summary - Structured notice-related summary
+  • Document Checklist - Verification checklist
+  • Title Review - Title-specific analysis
+
+SEMANTIC SEARCH:
+  • ChromaDB vector embeddings
+  • Similarity-based document retrieval
+  • Evidence citation in generated drafts
+
+LEARNING SYSTEM:
+  • Tracks user edits to generated drafts
+  • Extracts reusable style rules from edits
+  • Applies learned rules to future drafts
+  • Maintains rule frequency statistics
+
+═══════════════════════════════════════════════════════════════════════════
+TESTING THE APPLICATION
+═══════════════════════════════════════════════════════════════════════════
+
+1. Try the homepage (no API key needed):
+   curl http://localhost:8000
+
+2. Process a sample document (requires API key):
+   - Go to http://localhost:8000
+   - Click "Choose File"
+   - Select samples/sample_notice.txt
+   - Choose a draft type
+   - Click "Generate Draft"
+
+3. Generate a draft:
+   - Review the extracted document information
+   - Examine the generated draft
+   - Edit the draft content
+   - Submit edits for learning
+
+═══════════════════════════════════════════════════════════════════════════
+API ENDPOINTS
+═══════════════════════════════════════════════════════════════════════════
+
+UI ENDPOINTS:
+  GET  /                    - Homepage with file upload
+  POST /process             - Process document and generate draft
+  POST /edits               - Submit edited draft for learning
+
+API ENDPOINTS:
+  GET  /api/health          - Health check
+  POST /api/process         - Process document (JSON)
+  POST /api/draft           - Generate draft from docs (JSON)
+  GET  /api/documents       - List uploaded documents
+  GET  /api/drafts          - List generated drafts
+  GET  /api/rules           - Get learned style rules
+  POST /api/edit            - Submit edit for learning
+
+═══════════════════════════════════════════════════════════════════════════
+TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════════════
+
+Q: "ANTHROPIC_API_KEY is not configured"
+A: Set your API key: export ANTHROPIC_API_KEY="your-key"
+
+Q: "Port 8000 already in use"
+A: Change port: python -m uvicorn app.main:app --port 8001
+
+Q: Document processing fails
+A: Ensure you have a valid Anthropic API key set
+
+Q: PDF extraction doesn't work on specific PDFs
+A: The system automatically falls back to Claude Vision OCR
+
+═══════════════════════════════════════════════════════════════════════════
+PROJECT STRUCTURE
+═══════════════════════════════════════════════════════════════════════════
+
+app/
+  ├── main.py                 - FastAPI application & routes
+  ├── document_processor.py    - PDF/text extraction (pypdf)
+  ├── retrieval.py             - ChromaDB semantic search
+  ├── draft_generator.py       - Claude drafting engine
+  ├── edit_learner.py          - Edit analysis & learning
+  ├── storage.py               - SQLite persistence
+  ├── style_rules.py           - Rule management
+  ├── document_store.py        - File-based storage
+  ├── config.py                - Configuration
+  └── templates/
+      ├── index.html           - Upload & draft selector UI
+      └── result.html          - Draft display & editing UI
+
+requirements.txt             - Python dependencies
+.env.example                 - Environment template
+README.md                    - Complete documentation
+QUICKSTART.md               - 3-step setup guide
+INSTALLATION_SUCCESS.md     - Build details
+
+═══════════════════════════════════════════════════════════════════════════
+DOCUMENTATION
+═══════════════════════════════════════════════════════════════════════════
+
+For more information, see:
+  • README.md          - Full documentation and architecture
+  • QUICKSTART.md      - Quick 3-step setup guide
+  • INSTALLATION_SUCCESS.md - Build details and fixes
+
+═══════════════════════════════════════════════════════════════════════════
+
+Ready to go? Start with:
+  cd /Users/apurboshib/Desktop/Apurbo/Project_02
+  source .venv/bin/activate
+  export ANTHROPIC_API_KEY="your-key"
+  python -m uvicorn app.main:app --reload
+
+Then open: http://localhost:8000
+
+═══════════════════════════════════════════════════════════════════════════
