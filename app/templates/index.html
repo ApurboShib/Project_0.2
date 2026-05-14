@@ -959,10 +959,8 @@
         });
 
         if (response.ok) {
-          const html = await response.text();
-          document.open();
-          document.write(html);
-          document.close();
+          const result = await response.json();
+          window.location.href = `/result/${result.draft_id}`;
         } else {
           const errorText = await response.text();
           showAlert('Error: ' + (errorText || 'Unknown error'), 'error');

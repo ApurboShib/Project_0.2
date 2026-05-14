@@ -111,7 +111,7 @@ async def index(request: Request):
     )
 
 
-@app.post("/process", response_class=HTMLResponse)
+@app.post("/process")
 async def process_document(
     request: Request,
     file: UploadFile = File(...),
@@ -153,13 +153,22 @@ async def process_document(
         custom_instructions=custom_instructions.strip(),
     )
     store.save_draft(draft)
+    return {"draft_id": draft_id}
 
+
+@app.get("/result/{draft_id}", response_class=HTMLResponse)
+async def get_result(request: Request, draft_id: str):
+    draft = store.get_draft(draft_id)
+    if not draft:
+        raise HTTPException(status_code=404, detail="Draft not found")
+    draft["draft_type_label"] = DRAFT_TYPES.get(draft["draft_type"], "Legal Document")
+    
     return templates.TemplateResponse(
         "result.html",
         {
             "request": request,
-            "draft": draft.to_dict(),
-            "processed": processed.to_dict(),
+            "draft": draft,
+            "processed": None,
             "learned_rules": [],
         },
     )
