@@ -130,4 +130,9 @@ credentials*
 Procfile.local
 runtime.txt
 *.md
+!README.md
+*.pdf
+*.doc
+*.docx
+*.docx
 
