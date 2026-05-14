@@ -129,4 +129,5 @@ credentials*
 .envrc
 Procfile.local
 runtime.txt
-.md
+*.md
+!README.md
