@@ -50,15 +50,40 @@ graph TD
    ```
 
 3. Configure environment:
-   Create a `.env` file in the root directory:
+   Create a `.env` file in the root directory (or copy from `.env.example`):
    ```env
-   LLM_PROVIDER=groq
+   LLM_PROVIDER=groq # or anthropic
    GROQ_API_KEY=your_key_here
    LEGAL_AI_DATA_DIR=./data
    ```
 
 4. Access the application:
-   Open http://localhost:8000 in your browser.
+   The easiest way is to use the provided run script:
+   ```bash
+   ./run.sh
+   ```
+   Then open http://localhost:8000 in your browser.
+
+---
+
+## Testing
+
+The project includes an automated test suite using `pytest`.
+
+### Running Tests
+
+To run the tests, ensure your virtual environment is active and run:
+```bash
+# Set PYTHONPATH to include the current directory
+export PYTHONPATH=$PYTHONPATH:.
+pytest tests/test_api.py
+```
+
+### Manual Verification
+You can also verify the system by:
+1. **Health Check**: Visit http://localhost:8000/api/health to see if the API is responsive.
+2. **UI Test**: Upload a sample document from the `samples/` directory and generate a draft.
+3. **API Test**: Use the sample `curl` commands in [QUICKSTART.md](QUICKSTART.md) to test the REST endpoints.
 
 ---
 

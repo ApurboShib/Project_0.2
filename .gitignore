@@ -134,5 +134,6 @@ runtime.txt
 *.pdf
 *.doc
 *.docx
-*.docx
+*.txt
+!requirements.txt
 
