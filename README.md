@@ -84,6 +84,9 @@ You can also verify the system by:
 1. **Health Check**: Visit http://localhost:8000/api/health to see if the API is responsive.
 2. **UI Test**: Upload a sample document from the `samples/` directory and generate a draft.
 3. **API Test**: Use the sample `curl` commands in [QUICKSTART.md](QUICKSTART.md) to test the REST endpoints.
+4. **Interactive Docs**: Explore and execute the API directly using the built-in documentation:
+   - **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)
+   - **ReDoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
 
 ---
 
