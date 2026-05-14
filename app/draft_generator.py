@@ -97,14 +97,26 @@ class DraftGenerator:
             custom_instructions=custom_instructions,
         )
 
-        response = self.client.messages.create(
-            model=self.MODEL,
-            max_tokens=3000,
-            system=SYSTEM_PROMPT,
-            messages=[{"role": "user", "content": user_prompt}],
-        )
-
-        draft_content = response.content[0].text
+        if LLM_PROVIDER == "groq":
+            response = self.client.chat.completions.create(
+                model=self.MODEL,
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": user_prompt}
+                ],
+                max_tokens=3000,
+            )
+            draft_content = response.choices[0].message.content
+        else:
+            # Fallback for Anthropic-style clients
+            response = self.client.messages.create(
+                model=self.MODEL,
+                max_tokens=3000,
+                system=SYSTEM_PROMPT,
+                messages=[{"role": "user", "content": user_prompt}],
+            )
+            draft_content = response.content[0].text
+        
         word_count = len(draft_content.split())
 
         doc_names = doc_metadata.get("filenames", ["document"])

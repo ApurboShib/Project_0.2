@@ -1,21 +1,9 @@
-"""
-Edit Learner - The improvement loop.
-
-When an operator edits a draft, this module:
-1. Captures the diff (original vs edited)
-2. Sends both to Claude with instructions to extract reusable patterns
-3. Stores patterns as "style rules" in a persistent JSON store
-4. Rules are injected into future drafts of the same type
-
-This creates a genuine feedback loop: the system improves over time
-based on how operators actually prefer the output to look.
-"""
-
 import json
 import logging
 from datetime import datetime
 from dataclasses import dataclass, asdict
 from typing import List
+from app.config import LLM_PROVIDER
 
 logger = logging.getLogger(__name__)
 
@@ -93,7 +81,7 @@ Example: ["Rule 1", "Rule 2", "Rule 3"]
 
         diff_summary = self._compute_diff_summary(original, edited)
         rules = []
-        if self.anthropic:
+        if self.client:
             rules = self._extract_rules(diff_summary, draft_type, operator_note)
 
         if self.style_store:
@@ -152,13 +140,24 @@ DIFF BETWEEN ORIGINAL AND EDITED DRAFT:
         user_content += "\n\nExtract 2-5 reusable rules as a JSON array."
 
         try:
-            response = self.client.messages.create(
-                model=self.MODEL,
-                max_tokens=500,
-                system=self.EXTRACTION_SYSTEM,
-                messages=[{"role": "user", "content": user_content}],
-            )
-            raw = response.content[0].text.strip()
+            if LLM_PROVIDER == "groq":
+                response = self.client.chat.completions.create(
+                    model=self.MODEL,
+                    messages=[
+                        {"role": "system", "content": self.EXTRACTION_SYSTEM},
+                        {"role": "user", "content": user_content}
+                    ],
+                    max_tokens=500,
+                )
+                raw = response.choices[0].message.content.strip()
+            else:
+                response = self.client.messages.create(
+                    model=self.MODEL,
+                    max_tokens=500,
+                    system=self.EXTRACTION_SYSTEM,
+                    messages=[{"role": "user", "content": user_content}],
+                )
+                raw = response.content[0].text.strip()
             if raw.startswith("```"):
                 raw = raw.split("```")[1]
                 if raw.startswith("json"):
