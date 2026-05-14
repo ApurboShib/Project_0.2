@@ -189,7 +189,16 @@ async def process_document(
         custom_instructions=custom_instructions.strip(),
     )
     store.save_draft(draft)
-    return {"draft_id": draft_id}
+
+    return templates.TemplateResponse(
+        "result.html",
+        {
+            "request": request,
+            "draft": draft.to_dict(),
+            "processed": processed.to_dict(),
+            "learned_rules": [],
+        },
+    )
 
 
 @app.get("/result/{draft_id}", response_class=HTMLResponse)

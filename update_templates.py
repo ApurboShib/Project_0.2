@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+import os
+
+INDEX_HTML = """<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -397,3 +399,213 @@
   </script>
 </body>
 </html>
+"""
+
+RESULT_HTML = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generated Draft - Legal Drafting Assistant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      --bg-color: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --input-bg: rgba(15, 23, 42, 0.6);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6; padding: 30px 20px;
+      /* Remove background image to look clean inside modal or page */
+    }
+    
+    .container { max-width: 1000px; margin: 0 auto; }
+    
+    .card {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 12px; padding: 30px; margin-bottom: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      animation: slideIn 0.4s ease-out;
+    }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+    .card h2 { font-size: 20px; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; padding-bottom: 16px; border-bottom: 1px solid var(--card-border); color: #fff; }
+    
+    .error-card { border-left: 4px solid var(--danger); background: rgba(239,68,68,0.05); }
+    .error-message { color: #fca5a5; font-weight: 500; font-size: 16px; }
+
+    .draft-metadata { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-top: 16px; }
+    .metadata-item { display: flex; flex-direction: column; gap: 4px; }
+    .metadata-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+    .metadata-value { font-size: 15px; font-weight: 600; color: var(--text-main); }
+
+    .draft-content {
+      background: rgba(15, 23, 42, 0.5); padding: 24px; border-radius: 8px;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 13px; line-height: 1.7; white-space: pre-wrap; word-break: break-word;
+      border: 1px solid var(--card-border); color: #e2e8f0;
+    }
+
+    .evidence-item {
+      background: rgba(15, 23, 42, 0.4); border-left: 3px solid var(--accent);
+      padding: 16px; margin-bottom: 16px; border-radius: 6px;
+    }
+    .evidence-badge { background: var(--primary-gradient); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-bottom: 10px; display: inline-block; }
+    .evidence-source { color: var(--text-muted); font-size: 12px; margin-bottom: 10px; }
+    .evidence-text { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 6px; font-family: monospace; font-size: 12px; color: #cbd5e1; }
+
+    textarea { width: 100%; padding: 16px; background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 8px; color: var(--text-main); font-family: monospace; font-size: 13px; min-height: 200px; resize: vertical; outline: none; transition: var(--transition); margin-bottom: 16px; }
+    textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2); }
+
+    button { padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif; }
+    .btn-primary { background: var(--primary-gradient); color: white; }
+    .btn-primary:hover { box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); transform: translateY(-1px); }
+    .btn-secondary { background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--card-border); text-decoration: none; }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+    .status-msg { padding: 14px 16px; border-radius: 8px; font-size: 14px; margin-top: 16px; display: flex; align-items: center; gap: 10px; }
+    .status-msg.success { background: rgba(16,185,129,0.1); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
+
+    .rule-item { background: rgba(16,185,129,0.05); padding: 12px; margin: 8px 0; border-radius: 6px; border-left: 3px solid var(--success); display: flex; justify-content: space-between; align-items: center; }
+    .rule-text { font-size: 13px; color: #e2e8f0; }
+    .rule-badge { background: var(--success); color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+
+    .tag { background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 4px; font-size: 12px; border: 1px solid var(--card-border); margin-right: 6px; display: inline-block; margin-bottom: 6px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    {% if error %}
+      <div class="card error-card">
+        <h2>⚠️ Error Processing Document</h2>
+        <p class="error-message">{{ error }}</p>
+        <p style="color: var(--text-muted); margin-top: 16px; font-size: 14px;">Please check that you have configured your AI API key and try again with a valid document.</p>
+        <a href="/" class="btn-secondary" style="margin-top: 20px;">← Back to Upload</a>
+      </div>
+    {% else %}
+      <div class="card">
+        <h2><span>📝</span> {{ draft.title }}</h2>
+        <div class="draft-metadata">
+          <div class="metadata-item">
+            <span class="metadata-label">Draft Type</span>
+            <span class="metadata-value">{{ draft.draft_type_label }}</span>
+          </div>
+          <div class="metadata-item">
+            <span class="metadata-label">Word Count</span>
+            <span class="metadata-value">{{ draft.word_count }}</span>
+          </div>
+          <div class="metadata-item">
+            <span class="metadata-label">Evidence Used</span>
+            <span class="metadata-value">{{ draft.evidence_used|length }} sources</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><span>📄</span> Generated Draft</h2>
+        <div class="draft-content">{{ draft.content }}</div>
+      </div>
+
+      <div class="card">
+        <h2><span>🔍</span> Evidence & Citations</h2>
+        {% if draft.evidence_used %}
+          <div>
+            {% for evidence in draft.evidence_used %}
+              <div class="evidence-item">
+                <span class="evidence-badge">Evidence {{ loop.index }}</span>
+                <div class="evidence-source">
+                  <strong>📁 Source:</strong> {{ evidence.filename }} | 
+                  <strong>📄 Page:</strong> {{ evidence.page_num }} | 
+                  <strong>📊 Relevance:</strong> {{ (evidence.relevance_score * 100)|int }}%
+                </div>
+                <div class="evidence-text">{{ evidence.text }}</div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p style="color: var(--text-muted); font-size: 14px;">No specific evidence citations in this draft.</p>
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h2><span>✏️</span> Refine & Learn</h2>
+        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">
+          Edit the draft below. Your edits will be analyzed to extract style rules for future drafts.
+        </p>
+        <form action="/edits" method="post">
+          <input type="hidden" name="draft_id" value="{{ draft.draft_id }}" />
+          <textarea name="edited_content" id="edited_content">{{ draft.content }}</textarea>
+          <button type="submit" class="btn-primary"><span>💾</span> Save Edits & Learn Preferences</button>
+        </form>
+
+        {% if edit_saved %}
+          <div class="status-msg success">
+            <span>✓</span> <strong>Success!</strong> Your edits have been saved and analyzed.
+          </div>
+          {% if learned_rules %}
+            <div style="margin-top: 20px;">
+              <h3 style="font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; color: var(--success);">🎯 Newly Learned Rules</h3>
+              {% for rule in learned_rules %}
+                <div class="rule-item">
+                  <span class="rule-text">{{ rule }}</span>
+                  <span class="rule-badge">NEW</span>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h2><span>📋</span> Source Information</h2>
+        <div class="draft-metadata" style="margin-bottom: 20px;">
+          <div class="metadata-item"><span class="metadata-label">Filename</span><span class="metadata-value">{{ processed.filename }}</span></div>
+          <div class="metadata-item"><span class="metadata-label">Type</span><span class="metadata-value">{{ processed.structured.document_type|replace('_', ' ')|title }}</span></div>
+          <div class="metadata-item"><span class="metadata-label">Pages</span><span class="metadata-value">{{ processed.total_pages }}</span></div>
+        </div>
+        
+        {% if processed.structured.dates %}
+          <div style="margin-bottom: 16px;">
+            <div style="font-size: 12px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; font-weight: 600;">📅 Extracted Dates</div>
+            <div>{% for date in processed.structured.dates %}<span class="tag">{{ date }}</span>{% endfor %}</div>
+          </div>
+        {% endif %}
+        
+        {% if processed.structured.parties %}
+          <div>
+            <div style="font-size: 12px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; font-weight: 600;">👥 Parties</div>
+            <div>{% for party in processed.structured.parties %}<span class="tag">{{ party }}</span>{% endfor %}</div>
+          </div>
+        {% endif %}
+      </div>
+
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <a href="/" class="btn-secondary">← Back Home</a>
+        <a href="/api/documents" class="btn-secondary">📁 All Documents</a>
+        <a href="/api/drafts" class="btn-secondary">📝 All Drafts</a>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
+"""
+
+with open("app/templates/index.html", "w") as f:
+    f.write(INDEX_HTML)
+
+with open("app/templates/result.html", "w") as f:
+    f.write(RESULT_HTML)
+
+print("Templates updated successfully.")

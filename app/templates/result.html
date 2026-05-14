@@ -4,829 +4,196 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Generated Draft - Legal Drafting Assistant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* ============================================================
-       MODERN DESIGN SYSTEM
-       ============================================================ */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     :root {
-      /* Light Mode */
-      --bg-primary: #ffffff;
-      --bg-secondary: #f8fafc;
-      --bg-tertiary: #f1f5f9;
-      --text-primary: #0f172a;
-      --text-secondary: #64748b;
+      --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      --bg-color: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      
-      /* Dark Mode */
-      --dark-bg-primary: #0f172a;
-      --dark-bg-secondary: #1e293b;
-      --dark-bg-tertiary: #334155;
-      --dark-text-primary: #f8fafc;
-      --dark-text-secondary: #cbd5e1;
-      --dark-text-muted: #94a3b8;
-      
-      /* Accent Colors */
-      --accent-blue: #3b82f6;
-      --accent-blue-hover: #2563eb;
-      --accent-purple: #a855f7;
-      --accent-green: #10b981;
-      --accent-red: #ef4444;
-      --accent-amber: #f59e0b;
-      
-      /* Shadows & Effects */
-      --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
-      --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.1);
-      --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.1);
-      --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.1);
-      
-      /* Transitions */
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --input-bg: rgba(15, 23, 42, 0.6);
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
-    html[data-theme="dark"] {
-      --bg-primary: var(--dark-bg-primary);
-      --bg-secondary: var(--dark-bg-secondary);
-      --bg-tertiary: var(--dark-bg-tertiary);
-      --text-primary: var(--dark-text-primary);
-      --text-secondary: var(--dark-text-secondary);
-      --text-muted: var(--dark-text-muted);
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 
-                   'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', sans-serif;
-      background: var(--bg-secondary);
-      color: var(--text-primary);
-      line-height: 1.6;
-      transition: var(--transition);
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6; padding: 30px 20px;
+      /* Remove background image to look clean inside modal or page */
     }
-
-    /* ============================================================
-       HEADER / NAVIGATION
-       ============================================================ */
-    .navbar {
-      background: var(--bg-primary);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-      box-shadow: var(--shadow-sm);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      transition: var(--transition);
+    
+    .container { max-width: 1000px; margin: 0 auto; }
+    
+    .card {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 12px; padding: 30px; margin-bottom: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      animation: slideIn 0.4s ease-out;
     }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-    .navbar-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 64px;
-    }
+    .card h2 { font-size: 20px; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; padding-bottom: 16px; border-bottom: 1px solid var(--card-border); color: #fff; }
+    
+    .error-card { border-left: 4px solid var(--danger); background: rgba(239,68,68,0.05); }
+    .error-message { color: #fca5a5; font-weight: 500; font-size: 16px; }
 
-    .navbar-brand {
-      font-size: 20px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      cursor: pointer;
-      text-decoration: none;
-    }
+    .draft-metadata { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-top: 16px; }
+    .metadata-item { display: flex; flex-direction: column; gap: 4px; }
+    .metadata-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+    .metadata-value { font-size: 15px; font-weight: 600; color: var(--text-main); }
 
-    .navbar-brand::before {
-      content: "⚖️";
-      -webkit-text-fill-color: unset;
-      background: unset;
-    }
-
-    .navbar-controls {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .theme-toggle {
-      background: var(--bg-tertiary);
-      border: none;
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      transition: var(--transition);
-    }
-
-    .theme-toggle:hover {
-      background: var(--accent-blue);
-      color: white;
-      transform: scale(1.05);
-    }
-
-    /* ============================================================
-       MAIN CONTAINER
-       ============================================================ */
-    .main-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 40px 24px;
-    }
-
-    .page-header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .page-header h1 {
-      font-size: 36px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* ============================================================
-       STATUS / METADATA
-       ============================================================ */
-    .metadata-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-
-    .meta-card {
-      background: var(--bg-primary);
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: var(--shadow-sm);
-      border-left: 4px solid var(--accent-blue);
-      transition: var(--transition);
-    }
-
-    .meta-card:hover {
-      box-shadow: var(--shadow-md);
-      transform: translateY(-2px);
-    }
-
-    .meta-label {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 600;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-
-    .meta-value {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
-    /* ============================================================
-       CONTENT SECTIONS
-       ============================================================ */
-    .section {
-      background: var(--bg-primary);
-      border-radius: 12px;
-      padding: 32px;
-      margin-bottom: 32px;
-      box-shadow: var(--shadow-md);
-      animation: slideIn 0.4s ease;
-    }
-
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .section-title {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 20px;
-      padding-bottom: 16px;
-      border-bottom: 2px solid var(--bg-tertiary);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .section-title::before {
-      font-size: 24px;
-    }
-
-    .draft-title::before {
-      content: "📄";
-    }
-
-    .feedback-title::before {
-      content: "💬";
-    }
-
-    .actions-title::before {
-      content: "⚙️";
-    }
-
-    /* ============================================================
-       DRAFT CONTENT
-       ============================================================ */
     .draft-content {
-      background: var(--bg-tertiary);
-      padding: 28px;
-      border-radius: 8px;
-      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-      font-size: 14px;
-      line-height: 1.8;
-      overflow-x: auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-      border: 1px solid rgba(0, 0, 0, 0.05);
-      max-height: 500px;
-      overflow-y: auto;
+      background: rgba(15, 23, 42, 0.5); padding: 24px; border-radius: 8px;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 13px; line-height: 1.7; white-space: pre-wrap; word-break: break-word;
+      border: 1px solid var(--card-border); color: #e2e8f0;
     }
 
-    /* ============================================================
-       ERROR STATE
-       ============================================================ */
-    .error-section {
-      background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(248, 113, 113, 0.05));
-      border: 2px solid var(--accent-red);
-      border-radius: 12px;
-      padding: 32px;
-      margin-bottom: 32px;
-      text-align: center;
+    .evidence-item {
+      background: rgba(15, 23, 42, 0.4); border-left: 3px solid var(--accent);
+      padding: 16px; margin-bottom: 16px; border-radius: 6px;
     }
+    .evidence-badge { background: var(--primary-gradient); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-bottom: 10px; display: inline-block; }
+    .evidence-source { color: var(--text-muted); font-size: 12px; margin-bottom: 10px; }
+    .evidence-text { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 6px; font-family: monospace; font-size: 12px; color: #cbd5e1; }
 
-    .error-icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-    }
+    textarea { width: 100%; padding: 16px; background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 8px; color: var(--text-main); font-family: monospace; font-size: 13px; min-height: 200px; resize: vertical; outline: none; transition: var(--transition); margin-bottom: 16px; }
+    textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2); }
 
-    .error-title {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--accent-red);
-      margin-bottom: 12px;
-    }
+    button { padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif; }
+    .btn-primary { background: var(--primary-gradient); color: white; }
+    .btn-primary:hover { box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); transform: translateY(-1px); }
+    .btn-secondary { background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--card-border); text-decoration: none; }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); }
 
-    .error-message {
-      font-size: 16px;
-      color: var(--text-secondary);
-      margin-bottom: 24px;
-    }
+    .status-msg { padding: 14px 16px; border-radius: 8px; font-size: 14px; margin-top: 16px; display: flex; align-items: center; gap: 10px; }
+    .status-msg.success { background: rgba(16,185,129,0.1); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
 
-    /* ============================================================
-       FEEDBACK FORM
-       ============================================================ */
-    .feedback-form {
-      display: flex;
-      gap: 12px;
-      margin-top: 16px;
-    }
+    .rule-item { background: rgba(16,185,129,0.05); padding: 12px; margin: 8px 0; border-radius: 6px; border-left: 3px solid var(--success); display: flex; justify-content: space-between; align-items: center; }
+    .rule-text { font-size: 13px; color: #e2e8f0; }
+    .rule-badge { background: var(--success); color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
 
-    .feedback-btn {
-      flex: 1;
-      padding: 12px 16px;
-      border: 2px solid rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      background: var(--bg-tertiary);
-      cursor: pointer;
-      font-weight: 600;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .feedback-btn:hover {
-      border-color: var(--accent-blue);
-      background: rgba(59, 130, 246, 0.1);
-    }
-
-    .feedback-btn.selected {
-      border-color: var(--accent-blue);
-      background: rgba(59, 130, 246, 0.2);
-      color: var(--accent-blue);
-    }
-
-    .rating-group {
-      margin-top: 16px;
-    }
-
-    .rating-label {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      display: block;
-    }
-
-    .star-rating {
-      display: flex;
-      gap: 8px;
-    }
-
-    .star {
-      font-size: 32px;
-      cursor: pointer;
-      opacity: 0.3;
-      transition: var(--transition);
-    }
-
-    .star:hover,
-    .star.active {
-      opacity: 1;
-      transform: scale(1.2);
-    }
-
-    .comment-textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      background: var(--bg-tertiary);
-      color: var(--text-primary);
-      font-size: 14px;
-      font-family: inherit;
-      margin-top: 12px;
-      resize: vertical;
-      min-height: 100px;
-      transition: var(--transition);
-    }
-
-    .comment-textarea:focus {
-      outline: none;
-      border-color: var(--accent-blue);
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-    }
-
-    /* ============================================================
-       ACTION BUTTONS
-       ============================================================ */
-    .actions {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-top: 32px;
-    }
-
-    @media (max-width: 768px) {
-      .actions {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .btn {
-      padding: 14px 24px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      text-decoration: none;
-      outline: none;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-      color: white;
-      box-shadow: var(--shadow-lg);
-    }
-
-    .btn-primary:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-xl);
-    }
-
-    .btn-secondary {
-      background: var(--bg-tertiary);
-      color: var(--text-primary);
-      border: 2px solid var(--accent-blue);
-    }
-
-    .btn-secondary:hover:not(:disabled) {
-      background: rgba(59, 130, 246, 0.1);
-    }
-
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .btn-icon {
-      font-size: 18px;
-    }
-
-    /* ============================================================
-       ALERTS
-       ============================================================ */
-    .alert {
-      padding: 16px;
-      border-radius: 8px;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      animation: slideIn 0.3s ease;
-    }
-
-    .alert-success {
-      background: rgba(16, 185, 129, 0.1);
-      color: var(--accent-green);
-      border-left: 4px solid var(--accent-green);
-    }
-
-    .alert-error {
-      background: rgba(239, 68, 68, 0.1);
-      color: var(--accent-red);
-      border-left: 4px solid var(--accent-red);
-    }
-
-    .alert-icon {
-      font-size: 18px;
-      flex-shrink: 0;
-    }
-
-    /* ============================================================
-       RESPONSIVE
-       ============================================================ */
-    @media (max-width: 768px) {
-      .page-header h1 {
-        font-size: 24px;
-      }
-
-      .main-container {
-        padding: 20px 16px;
-      }
-
-      .section {
-        padding: 20px;
-      }
-
-      .draft-content {
-        font-size: 12px;
-        padding: 16px;
-      }
-
-      .metadata-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .navbar-brand {
-        font-size: 16px;
-      }
-    }
-
-    /* ============================================================
-       UTILITIES
-       ============================================================ */
-    .hidden {
-      display: none;
-    }
-
-    .text-center {
-      text-align: center;
-    }
-
-    .text-success {
-      color: var(--accent-green);
-    }
-
-    .text-error {
-      color: var(--accent-red);
-    }
-
-    .copy-btn {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      padding: 8px 12px;
-      background: var(--accent-blue);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 600;
-      transition: var(--transition);
-    }
-
-    .copy-btn:hover {
-      background: var(--accent-blue-hover);
-    }
-
-    .draft-container {
-      position: relative;
-    }
+    .tag { background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 4px; font-size: 12px; border: 1px solid var(--card-border); margin-right: 6px; display: inline-block; margin-bottom: 6px; }
   </style>
 </head>
 <body>
-  <!-- NAVBAR -->
-  <nav class="navbar">
-    <div class="navbar-container">
-      <a href="/" class="navbar-brand">Legal Drafting AI</a>
-      <div class="navbar-controls">
-        <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- MAIN CONTENT -->
-  <div class="main-container">
-    <!-- PAGE HEADER -->
-    <div class="page-header">
-      <h1>✨ Your Draft is Ready</h1>
-    </div>
-
-    <!-- ALERTS CONTAINER -->
-    <div id="alertsContainer"></div>
-
-    <!-- ERROR STATE (Shown if there's an error) -->
+  <div class="container">
     {% if error %}
-    <div class="error-section">
-      <div class="error-icon">⚠️</div>
-      <div class="error-title">Oops! Something went wrong</div>
-      <div class="error-message">{{ error }}</div>
-      <a href="/" class="btn btn-primary">
-        <span class="btn-icon">← </span>
-        <span>Go Back</span>
-      </a>
-    </div>
+      <div class="card error-card">
+        <h2>⚠️ Error Processing Document</h2>
+        <p class="error-message">{{ error }}</p>
+        <p style="color: var(--text-muted); margin-top: 16px; font-size: 14px;">Please check that you have configured your AI API key and try again with a valid document.</p>
+        <a href="/" class="btn-secondary" style="margin-top: 20px;">← Back to Upload</a>
+      </div>
     {% else %}
-
-    <!-- METADATA CARDS -->
-    <div class="metadata-grid">
-      <div class="meta-card">
-        <div class="meta-label">Draft Type</div>
-        <div class="meta-value">{{ draft.draft_type_label or 'Document' }}</div>
-      </div>
-      <div class="meta-card">
-        <div class="meta-label">Generated</div>
-        <div class="meta-value">Now ✓</div>
-      </div>
-      <div class="meta-card">
-        <div class="meta-label">Status</div>
-        <div class="meta-value" style="color: var(--accent-green);">Ready</div>
-      </div>
-    </div>
-
-    <!-- DRAFT SECTION -->
-    <div class="section">
-      <h2 class="section-title">Generated Document</h2>
-      <div class="draft-container">
-        <button class="copy-btn" id="copyBtn">📋 Copy</button>
-        <div class="draft-content" id="draftContent">{{ draft.content | safe }}</div>
-      </div>
-    </div>
-
-    <!-- FEEDBACK SECTION -->
-    <div class="section">
-      <h2 class="section-title">Your Feedback</h2>
-      
-      <div class="rating-group">
-        <label class="rating-label">How satisfied are you with this draft?</label>
-        <div class="star-rating" id="starRating">
-          <span class="star" data-value="1">⭐</span>
-          <span class="star" data-value="2">⭐</span>
-          <span class="star" data-value="3">⭐</span>
-          <span class="star" data-value="4">⭐</span>
-          <span class="star" data-value="5">⭐</span>
+      <div class="card">
+        <h2><span>📝</span> {{ draft.title }}</h2>
+        <div class="draft-metadata">
+          <div class="metadata-item">
+            <span class="metadata-label">Draft Type</span>
+            <span class="metadata-value">{{ draft.draft_type_label }}</span>
+          </div>
+          <div class="metadata-item">
+            <span class="metadata-label">Word Count</span>
+            <span class="metadata-value">{{ draft.word_count }}</span>
+          </div>
+          <div class="metadata-item">
+            <span class="metadata-label">Evidence Used</span>
+            <span class="metadata-value">{{ draft.evidence_used|length }} sources</span>
+          </div>
         </div>
       </div>
 
-      <div style="margin-top: 24px;">
-        <label class="rating-label">What could be improved?</label>
-        <div class="feedback-form">
-          <button class="feedback-btn" data-feedback="accuracy">
-            <span>✓</span> Accuracy
-          </button>
-          <button class="feedback-btn" data-feedback="clarity">
-            <span>✓</span> Clarity
-          </button>
-          <button class="feedback-btn" data-feedback="completeness">
-            <span>✓</span> Completeness
-          </button>
-          <button class="feedback-btn" data-feedback="format">
-            <span>✓</span> Format
-          </button>
+      <div class="card">
+        <h2><span>📄</span> Generated Draft</h2>
+        <div class="draft-content">{{ draft.content }}</div>
+      </div>
+
+      <div class="card">
+        <h2><span>🔍</span> Evidence & Citations</h2>
+        {% if draft.evidence_used %}
+          <div>
+            {% for evidence in draft.evidence_used %}
+              <div class="evidence-item">
+                <span class="evidence-badge">Evidence {{ loop.index }}</span>
+                <div class="evidence-source">
+                  <strong>📁 Source:</strong> {{ evidence.filename }} | 
+                  <strong>📄 Page:</strong> {{ evidence.page_num }} | 
+                  <strong>📊 Relevance:</strong> {{ (evidence.relevance_score * 100)|int }}%
+                </div>
+                <div class="evidence-text">{{ evidence.text }}</div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p style="color: var(--text-muted); font-size: 14px;">No specific evidence citations in this draft.</p>
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h2><span>✏️</span> Refine & Learn</h2>
+        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">
+          Edit the draft below. Your edits will be analyzed to extract style rules for future drafts.
+        </p>
+        <form action="/edits" method="post">
+          <input type="hidden" name="draft_id" value="{{ draft.draft_id }}" />
+          <textarea name="edited_content" id="edited_content">{{ draft.content }}</textarea>
+          <button type="submit" class="btn-primary"><span>💾</span> Save Edits & Learn Preferences</button>
+        </form>
+
+        {% if edit_saved %}
+          <div class="status-msg success">
+            <span>✓</span> <strong>Success!</strong> Your edits have been saved and analyzed.
+          </div>
+          {% if learned_rules %}
+            <div style="margin-top: 20px;">
+              <h3 style="font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; color: var(--success);">🎯 Newly Learned Rules</h3>
+              {% for rule in learned_rules %}
+                <div class="rule-item">
+                  <span class="rule-text">{{ rule }}</span>
+                  <span class="rule-badge">NEW</span>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h2><span>📋</span> Source Information</h2>
+        <div class="draft-metadata" style="margin-bottom: 20px;">
+          <div class="metadata-item"><span class="metadata-label">Filename</span><span class="metadata-value">{{ processed.filename }}</span></div>
+          <div class="metadata-item"><span class="metadata-label">Type</span><span class="metadata-value">{{ processed.structured.document_type|replace('_', ' ')|title }}</span></div>
+          <div class="metadata-item"><span class="metadata-label">Pages</span><span class="metadata-value">{{ processed.total_pages }}</span></div>
         </div>
+        
+        {% if processed.structured.dates %}
+          <div style="margin-bottom: 16px;">
+            <div style="font-size: 12px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; font-weight: 600;">📅 Extracted Dates</div>
+            <div>{% for date in processed.structured.dates %}<span class="tag">{{ date }}</span>{% endfor %}</div>
+          </div>
+        {% endif %}
+        
+        {% if processed.structured.parties %}
+          <div>
+            <div style="font-size: 12px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; font-weight: 600;">👥 Parties</div>
+            <div>{% for party in processed.structured.parties %}<span class="tag">{{ party }}</span>{% endfor %}</div>
+          </div>
+        {% endif %}
       </div>
 
-      <textarea class="comment-textarea" id="feedbackComment" placeholder="Additional comments or suggestions..."></textarea>
-
-      <div class="actions" style="margin-top: 24px;">
-        <button class="btn btn-primary" id="submitFeedbackBtn">
-          <span class="btn-icon">📤</span>
-          <span>Submit Feedback</span>
-        </button>
-        <button class="btn btn-secondary" id="refineDraftBtn">
-          <span class="btn-icon">✏️</span>
-          <span>Refine Draft</span>
-        </button>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <a href="/" class="btn-secondary">← Back Home</a>
+        <a href="/api/documents" class="btn-secondary">📁 All Documents</a>
+        <a href="/api/drafts" class="btn-secondary">📝 All Drafts</a>
       </div>
-    </div>
-
-    <!-- ACTIONS SECTION -->
-    <div class="section">
-      <h2 class="section-title">Next Steps</h2>
-      <div class="actions">
-        <button class="btn btn-primary" id="downloadBtn">
-          <span class="btn-icon">⬇️</span>
-          <span>Download</span>
-        </button>
-        <button class="btn btn-secondary" id="editBtn">
-          <span class="btn-icon">✏️</span>
-          <span>Edit Online</span>
-        </button>
-        <a href="/" class="btn btn-secondary">
-          <span class="btn-icon">+</span>
-          <span>New Draft</span>
-        </a>
-      </div>
-    </div>
-
     {% endif %}
   </div>
-
-  <script>
-    // ============================================================
-    // THEME MANAGEMENT
-    // ============================================================
-    const themeToggle = document.getElementById('themeToggle');
-    const htmlElement = document.documentElement;
-    
-    function loadTheme() {
-      const theme = localStorage.getItem('theme') || 'light';
-      htmlElement.setAttribute('data-theme', theme);
-      themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
-    }
-
-    themeToggle.addEventListener('click', () => {
-      const currentTheme = htmlElement.getAttribute('data-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      htmlElement.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-      themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
-    });
-
-    loadTheme();
-
-    // ============================================================
-    // COPY TO CLIPBOARD
-    // ============================================================
-    const copyBtn = document.getElementById('copyBtn');
-    const draftContent = document.getElementById('draftContent');
-
-    if (copyBtn && draftContent) {
-      copyBtn.addEventListener('click', () => {
-        const text = draftContent.textContent;
-        navigator.clipboard.writeText(text).then(() => {
-          const originalText = copyBtn.textContent;
-          copyBtn.textContent = '✓ Copied!';
-          setTimeout(() => {
-            copyBtn.textContent = originalText;
-          }, 2000);
-        }).catch(err => console.error('Failed to copy:', err));
-      });
-    }
-
-    // ============================================================
-    // FEEDBACK SYSTEM
-    // ============================================================
-    const starRating = document.getElementById('starRating');
-    const feedbackButtons = document.querySelectorAll('.feedback-btn');
-    const submitFeedbackBtn = document.getElementById('submitFeedbackBtn');
-    let selectedRating = 0;
-    let selectedFeedbacks = [];
-
-    if (starRating) {
-      starRating.addEventListener('click', (e) => {
-        if (e.target.classList.contains('star')) {
-          selectedRating = parseInt(e.target.dataset.value);
-          document.querySelectorAll('.star').forEach((star, idx) => {
-            if (idx < selectedRating) {
-              star.classList.add('active');
-            } else {
-              star.classList.remove('active');
-            }
-          });
-        }
-      });
-    }
-
-    feedbackButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        btn.classList.toggle('selected');
-        const feedback = btn.dataset.feedback;
-        if (btn.classList.contains('selected')) {
-          selectedFeedbacks.push(feedback);
-        } else {
-          selectedFeedbacks = selectedFeedbacks.filter(f => f !== feedback);
-        }
-      });
-    });
-
-    if (submitFeedbackBtn) {
-      submitFeedbackBtn.addEventListener('click', async () => {
-        const comment = document.getElementById('feedbackComment').value;
-        const rating = selectedRating;
-        const feedbacks = selectedFeedbacks.join(', ');
-
-        try {
-          const response = await fetch('/api/feedback', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ rating, feedbacks, comment, doc_ids: {{ draft.doc_ids | tojson }} })
-          });
-
-          if (response.ok) {
-            showAlert('✓ Thank you for your feedback!', 'success');
-            submitFeedbackBtn.disabled = true;
-            document.getElementById('feedbackComment').value = '';
-            document.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
-            feedbackButtons.forEach(b => b.classList.remove('selected'));
-            selectedRating = 0;
-            selectedFeedbacks = [];
-          }
-        } catch (error) {
-          showAlert('Error submitting feedback: ' + error.message, 'error');
-        }
-      });
-    }
-
-    // ============================================================
-    // ACTION BUTTONS
-    // ============================================================
-    const downloadBtn = document.getElementById('downloadBtn');
-    const editBtn = document.getElementById('editBtn');
-    const refineDraftBtn = document.getElementById('refineDraftBtn');
-
-    if (downloadBtn) {
-      downloadBtn.addEventListener('click', () => {
-        const text = draftContent.textContent;
-        const blob = new Blob([text], { type: 'text/plain' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'legal_draft.txt';
-        a.click();
-        window.URL.revokeObjectURL(url);
-      });
-    }
-
-    if (editBtn) {
-      editBtn.addEventListener('click', () => {
-        alert('Online editor coming soon! For now, download the document to edit.');
-      });
-    }
-
-    if (refineDraftBtn) {
-      refineDraftBtn.addEventListener('click', () => {
-        window.location.href = '/';
-      });
-    }
-
-    // ============================================================
-    // ALERTS
-    // ============================================================
-    function showAlert(message, type) {
-      const container = document.getElementById('alertsContainer');
-      const alert = document.createElement('div');
-      alert.className = `alert alert-${type}`;
-      alert.innerHTML = `
-        <span class="alert-icon">${type === 'success' ? '✓' : '⚠️'}</span>
-        <span>${message}</span>
-      `;
-      
-      container.appendChild(alert);
-      setTimeout(() => alert.remove(), 4000);
-    }
-  </script>
 </body>
 </html>
