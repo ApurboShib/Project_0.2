@@ -313,6 +313,13 @@
         document.getElementById('resultsContent').innerHTML = html;
         document.getElementById('modalTitle').textContent = 'Draft Generated';
         document.getElementById('resultsModal').classList.add('active');
+        
+        const rawContentEl = document.getElementById('raw-content');
+        if (rawContentEl && window.marked) {
+          const rawText = rawContentEl.textContent || rawContentEl.innerText;
+          document.getElementById('rendered-draft').innerHTML = marked.parse(rawText);
+        }
+        
         event.target.reset();
       } catch (error) {
         status.className = 'status-msg error';
@@ -395,5 +402,6 @@
 
     document.addEventListener('DOMContentLoaded', checkStatus);
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </body>
 </html>
