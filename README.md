@@ -1,6 +1,4 @@
 <div align="center">
-  <img src="architecture.svg" alt="System Architecture" width="100%">
-  
   # Pearson Specter Litt: Legal AI Document Intelligence System
   
   **An enterprise-grade, end-to-end AI platform for processing legal documents, generating evidence-grounded drafts, and continuously improving through operator feedback.**
@@ -10,7 +8,40 @@
 
 ## 🌟 Platform Overview
 
-The **Legal AI Document Intelligence System** is built around a robust 4-stage pipeline that ensures high-accuracy extraction, hallucination-free drafting, and a continuous learning loop. 
+```mermaid
+graph TD
+    %% Input Layer
+    Upload[📤 Document Upload] --> Processor
+
+    subgraph "Stage 1: Document Processing"
+        Processor[⚙️ Document Processor]
+        OCR[👁️ Vision OCR / PyMuPDF]
+        Meta[🏷️ Metadata Extraction]
+        Processor --> OCR --> Meta
+    end
+
+    subgraph "Stage 2: Grounded Retrieval"
+        Meta --> VectorStore[(🗄️ ChromaDB)]
+        VectorStore --> Retriever[🔍 Semantic Retriever]
+    end
+
+    subgraph "Stage 3: Draft Generation"
+        Retriever --> Generator[📝 Draft Generator]
+        Generator --> LLM((🤖 AI LLM))
+        LLM --> Draft[📄 Grounded Draft]
+    end
+
+    subgraph "Stage 4: Operator Review"
+        Draft --> Human[👤 Human Editing]
+        Human --> Learner[🧠 Edit Learner]
+        Learner --> StyleDB[(📐 Style Rules DB)]
+    end
+
+    %% Continuous Improvement Loop
+    StyleDB -.->|Injects formatting rules| Generator
+```
+
+The **Legal AI Document Intelligence System** is built around a robust 4-stage pipeline that ensures high-accuracy extraction, hallucination-free drafting, and a continuous learning loop.
 
 ### ⚙️ Stage 1: Document Processing
 - **Capabilities**: Native PDF text extraction (via PyMuPDF), Claude Vision OCR fallback for scanned pages, and block-level layout analysis.
@@ -97,6 +128,24 @@ The project includes an automated test suite utilizing `pytest`.
 export PYTHONPATH=$PYTHONPATH:.
 pytest tests/test_api.py
 ```
+
+---
+
+## 🌐 API Reference
+
+FastAPI automatically generates interactive API documentation. Once the server is running, you can access:
+- **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)
+- **ReDoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
+
+| Endpoint | Method | Description |
+| :--- | :--- | :--- |
+| `/api/health` | `GET` | Check system and API health status |
+| `/api/process` | `POST` | Upload and process a new legal document (PDF/TXT/Image) |
+| `/api/draft` | `POST` | Generate a new grounded draft utilizing semantic search |
+| `/api/edit` | `POST` | Submit an operator's edited draft to extract new style rules |
+| `/api/documents`| `GET` | List all processed documents and their structural metadata |
+| `/api/drafts` | `GET` | List all previously generated AI drafts |
+| `/api/rules` | `GET` | Retrieve all frequency-ranked style rules by draft type |
 
 ---
 
