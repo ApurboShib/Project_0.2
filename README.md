@@ -1,40 +1,40 @@
 <div align="center">
-  # Pearson Specter Litt: Legal AI Document Intelligence System
-  
+ # ⚖️ Pearson Specter Litt
+### Legal AI Document Intelligence System
   **An enterprise-grade, end-to-end AI platform for processing legal documents, generating evidence-grounded drafts, and continuously improving through operator feedback.**
 </div>
 
 ---
 
-## 🌟 Platform Overview
+## Platform Overview
 
 ```mermaid
 graph TD
     %% Input Layer
-    Upload[📤 Document Upload] --> Processor
+    Upload[ Document Upload] --> Processor
 
     subgraph "Stage 1: Document Processing"
-        Processor[⚙️ Document Processor]
-        OCR[👁️ Vision OCR / PyMuPDF]
-        Meta[🏷️ Metadata Extraction]
+        Processor[Document Processor]
+        OCR[Vision OCR / PyMuPDF]
+        Meta[Metadata Extraction]
         Processor --> OCR --> Meta
     end
 
     subgraph "Stage 2: Grounded Retrieval"
-        Meta --> VectorStore[(🗄️ ChromaDB)]
-        VectorStore --> Retriever[🔍 Semantic Retriever]
+        Meta --> VectorStore[(ChromaDB)]
+        VectorStore --> Retriever[Semantic Retriever]
     end
 
     subgraph "Stage 3: Draft Generation"
-        Retriever --> Generator[📝 Draft Generator]
-        Generator --> LLM((🤖 AI LLM))
-        LLM --> Draft[📄 Grounded Draft]
+        Retriever --> Generator[Draft Generator]
+        Generator --> LLM((AI LLM))
+        LLM --> Draft[Grounded Draft]
     end
 
     subgraph "Stage 4: Operator Review"
-        Draft --> Human[👤 Human Editing]
-        Human --> Learner[🧠 Edit Learner]
-        Learner --> StyleDB[(📐 Style Rules DB)]
+        Draft --> Human[Human Editing]
+        Human --> Learner[Edit Learner]
+        Learner --> StyleDB[(Style Rules DB)]
     end
 
     %% Continuous Improvement Loop
@@ -43,31 +43,31 @@ graph TD
 
 The **Legal AI Document Intelligence System** is built around a robust 4-stage pipeline that ensures high-accuracy extraction, hallucination-free drafting, and a continuous learning loop.
 
-### ⚙️ Stage 1: Document Processing
+### Stage 1: Document Processing
 - **Capabilities**: Native PDF text extraction (via PyMuPDF), Claude Vision OCR fallback for scanned pages, and block-level layout analysis.
 - **Outputs**: Cleaned, normalized text alongside structured metadata fields (Parties, Dates, Case Numbers, Amounts, Jurisdiction).
 - **Architecture**: `document_processor.py`
 
-### 🔍 Stage 2: Grounded Retrieval
+### Stage 2: Grounded Retrieval
 - **Capabilities**: Semantic vector search utilizing `ChromaDB` and `Sentence-transformers`.
 - **Methodology**: Overlapping chunk windowing (400 words, 80-word overlap) with document-scoped filtering to ensure high relevance.
 - **Outputs**: Ranked evidence chunks with strict citation tracking for downstream drafting.
 - **Architecture**: `retrieval_engine.py`
 
-### 📝 Stage 3: Draft Generation
+### Stage 3: Draft Generation
 - **Capabilities**: Instruction-tuned generation using Claude 3.5 Sonnet (or Groq/Gemini). Enforces strict grounding rules, requiring explicit citations for all claims.
 - **Draft Types**: Case Fact Summary, Internal Memo, Notice Summary, Document Checklist, Title Review Summary.
 - **Outputs**: Structured, professional legal drafts dynamically styled via user preferences.
 - **Architecture**: `draft_generator.py`
 
-### 🧠 Stage 4: Operator Review & Continuous Learning
+### Stage 4: Operator Review & Continuous Learning
 - **Capabilities**: Human-in-the-loop (HITL) editing interface. The system captures original vs. edited drafts, computes line-level diffs, and extracts reusable style rules.
 - **Mechanism**: Rules are frequency-weighted, persisted to the database, and automatically injected into subsequent draft generations.
 - **Architecture**: `edit_learner.py` & `storage.py`
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **Backend / API**: FastAPI (Python 3.9+)
 - **Frontend UI**: HTML/CSS/JS with Real-time Markdown Rendering
@@ -78,7 +78,7 @@ The **Legal AI Document Intelligence System** is built around a robust 4-stage p
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Python 3.9 or higher
@@ -111,7 +111,7 @@ The **Legal AI Document Intelligence System** is built around a robust 4-stage p
 
 ---
 
-## 🧪 Testing & Evaluation (Rubric Alignment)
+## Testing & Evaluation (Rubric Alignment)
 
 The system is rigorously tested and evaluated across the following dimensions (Total: **100 pts**):
 
@@ -131,7 +131,7 @@ pytest tests/test_api.py
 
 ---
 
-## 🌐 API Reference
+## API Reference
 
 FastAPI automatically generates interactive API documentation. Once the server is running, you can access:
 - **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)
@@ -149,7 +149,7 @@ FastAPI automatically generates interactive API documentation. Once the server i
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 Project_0.2/
