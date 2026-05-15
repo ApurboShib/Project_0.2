@@ -28,8 +28,8 @@ fi
 
 # Install/update dependencies
 echo "📚 Installing dependencies..."
-python -m pip install --upgrade pip setuptools wheel >/dev/null
-python -m pip install -q -r requirements.txt
+python -m pip install --upgrade pip setuptools wheel 2>&1 | grep -i -E "(success|already|installed|error)" || true
+python -m pip install -r requirements.txt 2>&1 | tail -10
 
 # Heal partially installed environments (common after interrupted installs)
 if ! python -c "import fastapi, pydantic, chromadb" >/dev/null 2>&1; then
@@ -41,7 +41,7 @@ fi
 if [ ! -f ".env" ]; then
     echo "⚠️  No .env file found. Creating from template..."
     cp .env.example .env
-    echo "📝 Please edit .env and add your ANTHROPIC_API_KEY"
+    echo " Please edit .env and add your ANTHROPIC_API_KEY"
 fi
 
 # Load environment variables
@@ -53,8 +53,8 @@ fi
 mkdir -p data
 
 # Silence Chroma telemetry in local development
-export ANONYMIZED_TELEMETRY=False
-export CHROMA_ANONYMIZED_TELEMETRY=False
+export ANONYMIZED_TELEMETRY="false"
+export CHROMA_ANONYMIZED_TELEMETRY="false"
 
 # Start the server
 echo ""
@@ -63,4 +63,4 @@ echo "📍 Open http://localhost:8000 in your browser"
 echo "🛑 Press Ctrl+C to stop the server"
 echo ""
 
-uvicorn app.main:app --reload --reload-dir app --reload-exclude ".venv/*" --host 0.0.0.0 --port 8000
+uvicorn app.main:app --reload --reload-dir app --host 0.0.0.0 --port 8000
