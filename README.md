@@ -176,12 +176,9 @@ Project_0.2/
 ## 🚀 Future Roadmap
 
 - [ ] **Multi-user Support**: Role-based access control (RBAC) for law firms.
-- [ ] **Extended OCR**: Support for specialized handwriting recognition in legacy legal deeds.
+- [ ] **Extended Multilingual OCR**: Optimized support for Bangla and other complex scripts in messy legal documents.
 - [ ] **Export to DOCX/PDF**: Direct export functionality with professional legal letterheads.
 - [ ] **Batch Processing**: Ability to process entire discovery folders in one click.
-
----
-
 
 ---
 

@@ -220,7 +220,7 @@ class DocumentProcessor:
             img_b64 = base64.standard_b64encode(img_bytes).decode()
             prompt = (
                 "This is a page from a legal document. "
-                "Please extract ALL visible text exactly as it appears, "
+                "Please extract ALL visible text exactly as it appears in its native language (e.g., English, Bangla, etc.), "
                 "preserving structure (headings, lists, paragraphs). "
                 "If text is partially illegible, do your best and mark "
                 "uncertain parts with [?]. Output only the extracted text."
