@@ -157,3 +157,44 @@ class SQLiteStore:
         )
         rows = cur.fetchall()
         return [{"rule_text": r["rule_text"], "frequency": r["frequency"]} for r in rows]
+
+    def list_documents(self) -> list:
+        cur = self.conn.cursor()
+        cur.execute("SELECT processed_json FROM documents ORDER BY created_at DESC")
+        docs = []
+        for row in cur.fetchall():
+            try:
+                data = json.loads(row["processed_json"])
+                docs.append({
+                    "doc_id": data.get("doc_id", ""),
+                    "filename": data.get("filename", ""),
+                    "total_pages": data.get("total_pages", 0),
+                    "word_count": data.get("word_count", 0),
+                    "doc_type": data.get("structured", {}).get("document_type", ""),
+                    "processing_notes": data.get("processing_notes", [])
+                })
+            except json.JSONDecodeError:
+                pass
+        return docs
+
+    def list_drafts(self) -> list:
+        cur = self.conn.cursor()
+        cur.execute("SELECT draft_id, title, draft_type, doc_ids, content FROM drafts ORDER BY created_at DESC")
+        drafts = []
+        for row in cur.fetchall():
+            try:
+                doc_ids = json.loads(row["doc_ids"])
+                content = row["content"]
+                word_count = len(content.split()) if content else 0
+                draft_type = row["draft_type"]
+                drafts.append({
+                    "draft_id": row["draft_id"],
+                    "title": row["title"],
+                    "draft_type": draft_type,
+                    "draft_type_label": draft_type.replace("_", " ").title(),
+                    "doc_ids": doc_ids,
+                    "word_count": word_count
+                })
+            except Exception:
+                pass
+        return drafts

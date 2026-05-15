@@ -330,13 +330,13 @@ async def api_submit_edit(payload: EditRequest):
 
 @app.get("/api/documents")
 async def api_list_documents():
-    docs = doc_store.list_documents()
+    docs = store.list_documents()
     return JSONResponse(docs)
 
 
 @app.get("/api/drafts")
 async def api_list_drafts():
-    drafts = doc_store.list_drafts()
+    drafts = store.list_drafts()
     return JSONResponse(drafts)
 
 
