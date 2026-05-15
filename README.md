@@ -1,6 +1,12 @@
 <div align="center">
- # ⚖️ Pearson Specter Litt
-### Legal AI Document Intelligence System
+  # ⚖️ Pearson Specter Litt
+  ### Legal AI Document Intelligence System
+
+  [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+  [![FastAPI](https://img.shields.io/badge/FastAPI-0.111.0-05998b.svg)](https://fastapi.tiangolo.com/)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  [![ChromaDB](https://img.shields.io/badge/Vector%20Store-ChromaDB-orange.svg)](https://www.trychroma.com/)
+
   **An enterprise-grade, end-to-end AI platform for processing legal documents, generating evidence-grounded drafts, and continuously improving through operator feedback.**
 </div>
 
@@ -11,7 +17,7 @@
 ```mermaid
 graph TD
     %% Input Layer
-    Upload[ Document Upload] --> Processor
+    Upload[Document Upload] --> Processor
 
     subgraph "Stage 1: Document Processing"
         Processor[Document Processor]
@@ -164,6 +170,18 @@ Project_0.2/
 ├── run.sh                 # Bootstrap script
 └── requirements.txt       # Dependencies
 ```
+
+---
+
+## 🚀 Future Roadmap
+
+- [ ] **Multi-user Support**: Role-based access control (RBAC) for law firms.
+- [ ] **Extended OCR**: Support for specialized handwriting recognition in legacy legal deeds.
+- [ ] **Export to DOCX/PDF**: Direct export functionality with professional legal letterheads.
+- [ ] **Batch Processing**: Ability to process entire discovery folders in one click.
+
+---
+
 
 ---
 
