@@ -132,6 +132,12 @@ def _aggregate_metadata(processed_docs: list) -> dict:
     return {"filenames": filenames, "doc_type": doc_type, "doc_ids": doc_ids}
 
 
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    from fastapi.responses import Response
+    return Response(content=b"", media_type="image/x-icon")
+
+
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     return templates.TemplateResponse(
