@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 import chromadb
+from chromadb.config import Settings
 from chromadb.utils import embedding_functions
 
 logger = logging.getLogger(__name__)
@@ -31,7 +32,10 @@ class RetrievalEngine:
     """
 
     def __init__(self, persist_dir: str):
-        self.client = chromadb.PersistentClient(path=persist_dir)
+        self.client = chromadb.PersistentClient(
+            path=persist_dir,
+            settings=Settings(anonymized_telemetry=False),
+        )
         self.ef = embedding_functions.DefaultEmbeddingFunction()
         self._ensure_collection()
 

@@ -20,9 +20,22 @@ fi
 echo "🔌 Activating virtual environment..."
 source .venv/bin/activate
 
+# Repair missing/broken pip inside the virtual environment
+if ! python -m pip --version >/dev/null 2>&1; then
+    echo "🛠️  pip is missing in .venv, repairing with ensurepip..."
+    python -m ensurepip --upgrade
+fi
+
 # Install/update dependencies
 echo "📚 Installing dependencies..."
-pip install -q -r requirements.txt
+python -m pip install --upgrade pip setuptools wheel >/dev/null
+python -m pip install -q -r requirements.txt
+
+# Heal partially installed environments (common after interrupted installs)
+if ! python -c "import fastapi, pydantic, chromadb" >/dev/null 2>&1; then
+    echo "🛠️  Detected broken package state, repairing dependencies..."
+    python -m pip install --force-reinstall -r requirements.txt
+fi
 
 # Check for .env file
 if [ ! -f ".env" ]; then
@@ -39,6 +52,10 @@ fi
 # Create data directory
 mkdir -p data
 
+# Silence Chroma telemetry in local development
+export ANONYMIZED_TELEMETRY=False
+export CHROMA_ANONYMIZED_TELEMETRY=False
+
 # Start the server
 echo ""
 echo "🚀 Starting Legal Drafting Assistant..."
@@ -46,4 +63,4 @@ echo "📍 Open http://localhost:8000 in your browser"
 echo "🛑 Press Ctrl+C to stop the server"
 echo ""
 
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+uvicorn app.main:app --reload --reload-dir app --reload-exclude ".venv/*" --host 0.0.0.0 --port 8000
