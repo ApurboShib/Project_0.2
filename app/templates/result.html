@@ -165,6 +165,7 @@
         {% endif %}
       </div>
 
+      {% if processed %}
       <div class="card">
         <h2><span>📋</span> Source Information</h2>
         <div class="draft-metadata" style="margin-bottom: 20px;">
@@ -187,6 +188,7 @@
           </div>
         {% endif %}
       </div>
+      {% endif %}
 
       <div style="display: flex; gap: 12px; flex-wrap: wrap;">
         <a href="/" class="btn-secondary">← Back Home</a>
