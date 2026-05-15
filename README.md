@@ -119,14 +119,12 @@ The **Legal AI Document Intelligence System** is built around a robust 4-stage p
 
 ## Testing & Evaluation (Rubric Alignment)
 
-The system is rigorously tested and evaluated across the following dimensions (Total: **100 pts**):
-
-1. **Document Processing (25 pts)**: Accurate OCR, extraction, and structured output.
-2. **Retrieval & Grounding (25 pts)**: High relevance scoring, explicit citations, and evidence backing.
-3. **Draft Quality (10 pts)**: Clarity, structural integrity, and strict grounding of output.
-4. **Improvement from Edits (25 pts)**: Successful capture of edits, extraction of formatting rules, and application to future drafts.
-5. **Code Quality (10 pts)**: Clean, modular architecture design.
-6. **Docs & Clarity (5 pts)**: Comprehensive documentation and setup guides.
+1. **Document Processing**: Accurate OCR, extraction, and structured output.
+2. **Retrieval & Grounding**: High relevance scoring, explicit citations, and evidence backing.
+3. **Draft Quality**: Clarity, structural integrity, and strict grounding of output.
+4. **Improvement from Edits**: Successful capture of edits, extraction of formatting rules, and application to future drafts.
+5. **Code Quality**: Clean, modular architecture design.
+6. **Docs & Clarity**: Comprehensive documentation and setup guides.
 
 ### Running Automated Tests
 The project includes an automated test suite utilizing `pytest`.
